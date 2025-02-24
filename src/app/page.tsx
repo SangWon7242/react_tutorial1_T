@@ -2,28 +2,48 @@
 import React, { useState } from "react";
 
 export default function Home() {
-  const [number, setNumber] = useState(0);
-  const [recordNumber, setRecordNumber] = useState(0);
+  const [number, setNumber] = useState<number>(0);
+  const [numberList, setNumberList] = useState<number[]>([]);
+
+  const increaseNumber = () => {
+    setNumber(number + 1);
+  };
+
+  const decreaseNumber = () => {
+    if (number === 0) return;
+
+    setNumber(number + 1);
+  };
+
+  const saveNumber = () => {
+    const newNumber = [...numberList, number];
+    setNumberList(newNumber);
+  };
+
+  const resetNumber = () => {
+    setNumber(0);
+    setNumberList([]);
+  };
 
   return (
     <>
       <div>
         <div>{number}</div>
-        <button onClick={() => setNumber(number + 1)}>증가</button>
+        <button onClick={increaseNumber}>증가</button>
         &nbsp;
-        <button onClick={() => setNumber(number - 1)}>감소</button>
+        <button onClick={decreaseNumber}>감소</button>
         &nbsp;
-        <button onClick={() => setRecordNumber(number)}>기록</button>
+        <button onClick={saveNumber}>기록</button>
         &nbsp;
-        <button onClick={() => setRecordNumber(0)}>리셋</button>
+        <button onClick={resetNumber}>리셋</button>
       </div>
       <div>
-        {recordNumber == 0 ? (
+        {numberList.length == 0 ? (
           <h1>숫자를 기록해주세요.</h1>
         ) : (
           <>
             <h1>기록 된 숫자</h1>
-            <div>{recordNumber}</div>
+            <div>{JSON.stringify(numberList)}</div>
           </>
         )}
       </div>
