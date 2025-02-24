@@ -43,7 +43,15 @@ export default function Home() {
         ) : (
           <>
             <h1>기록 된 숫자</h1>
-            <div>{JSON.stringify(numberList)}</div>
+            <nav>
+              <ul>
+                {numberList.map((num, index) => (
+                  <li key={index}>
+                    {index + 1}번 : {num}
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </>
         )}
       </div>
