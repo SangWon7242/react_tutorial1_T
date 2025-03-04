@@ -14,3 +14,13 @@ html > body {
   font-family: "GmarketSansMedium";
   text-underline-position: under;
 }
+
+@layer components {
+  .nav-item {
+    @apply hover:underline hover:text-red-500;
+  }
+
+  .menu-text {
+    @apply flex h-full items-center px-3;
+  }
+}
