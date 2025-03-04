@@ -13,6 +13,11 @@ interface RecordedNumbersListProps {
   numberList: number[];
 }
 
+interface RecordedNumbersListItemProps {
+  num: number;
+  index: number;
+}
+
 const NumberController = ({
   number,
   increaseNumber,
@@ -34,6 +39,17 @@ const NumberController = ({
   );
 };
 
+const RecordedNumbersListItem = ({
+  num,
+  index,
+}: RecordedNumbersListItemProps) => {
+  return (
+    <li key={index}>
+      {index + 1}번 : {num}
+    </li>
+  );
+};
+
 const RecordedNumbersList = ({ numberList }: RecordedNumbersListProps) => {
   return (
     <div>
@@ -45,9 +61,7 @@ const RecordedNumbersList = ({ numberList }: RecordedNumbersListProps) => {
           <nav>
             <ul>
               {numberList.map((num, index) => (
-                <li key={index}>
-                  {index + 1}번 : {num}
-                </li>
+                <RecordedNumbersListItem key={index} num={num} index={index} />
               ))}
             </ul>
           </nav>
