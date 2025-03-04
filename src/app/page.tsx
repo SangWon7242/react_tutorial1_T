@@ -44,7 +44,7 @@ const RecordedNumbersListItem = ({
   index,
 }: RecordedNumbersListItemProps) => {
   return (
-    <li key={index}>
+    <li>
       {index + 1}번 : {num}
     </li>
   );
@@ -53,7 +53,7 @@ const RecordedNumbersListItem = ({
 const RecordedNumbersList = ({ numberList }: RecordedNumbersListProps) => {
   return (
     <div>
-      {numberList.length == 0 ? (
+      {numberList.length === 0 ? (
         <h1>숫자를 기록해주세요.</h1>
       ) : (
         <>
@@ -82,7 +82,7 @@ export default function Home() {
   const decreaseNumber = () => {
     if (number === 0) return;
 
-    setNumber(number + 1);
+    setNumber(number - 1);
   };
 
   const saveNumber = () => {
