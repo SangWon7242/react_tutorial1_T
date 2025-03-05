@@ -11,6 +11,11 @@ interface TodoListProps {
   todos: string[];
 }
 
+interface TodoListItemProps {
+  value: string;
+  index: number;
+}
+
 const TodoForm = ({ todo, setTodo, addTodo }: TodoFormProps) => {
   return (
     <div className="todo-input-form flex gap-x-2">
@@ -28,11 +33,29 @@ const TodoForm = ({ todo, setTodo, addTodo }: TodoFormProps) => {
   );
 };
 
+const TodoListItem = ({ value, index }: TodoListItemProps) => {
+  return (
+    <li>
+      {index + 1}번 : {value}
+    </li>
+  );
+};
+
 const TodoList = ({ todos }: TodoListProps) => {
   return (
     <div className="todo-list mt-3">
-      <h2>할 일을 작성해주세요.</h2>
-      <div>{JSON.stringify(todos)}</div>
+      {todos.length === 0 ? (
+        <h2>할 일을 작성해주세요.</h2>
+      ) : (
+        <>
+          <h2>할 일 목록</h2>
+          <ul>
+            {todos.map((value, index) => (
+              <TodoListItem key={index} value={value} index={index} />
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 };
