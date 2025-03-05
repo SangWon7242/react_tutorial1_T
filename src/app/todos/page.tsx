@@ -1,5 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
+
+interface TodoFormProps {
+  todo: string;
+  setTodo: Dispatch<SetStateAction<string>>;
+  addTodo: () => void;
+}
+
+interface TodoListProps {
+  todos: string[];
+}
+
+const TodoForm = ({ todo, setTodo, addTodo }: TodoFormProps) => {
+  return (
+    <div className="todo-input-form flex gap-x-2">
+      <input
+        type="text"
+        placeholder="할 일을 작성해주세요."
+        className="input"
+        value={todo}
+        onChange={(e) => setTodo(e.target.value)}
+      />
+      <button className="btn btn-primary" onClick={addTodo}>
+        작성
+      </button>
+    </div>
+  );
+};
+
+const TodoList = ({ todos }: TodoListProps) => {
+  return (
+    <div className="todo-list mt-3">
+      <h2>할 일을 작성해주세요.</h2>
+      <div>{JSON.stringify(todos)}</div>
+    </div>
+  );
+};
 
 export default function Todo() {
   const [todo, setTodo] = useState<string>("");
@@ -17,22 +53,8 @@ export default function Todo() {
 
   return (
     <div className="todos-wrap">
-      <div className="todo-input-form flex gap-x-2">
-        <input
-          type="text"
-          placeholder="할 일을 작성해주세요."
-          className="input"
-          value={todo}
-          onChange={(e) => setTodo(e.target.value)}
-        />
-        <button className="btn btn-primary" onClick={addTodo}>
-          작성
-        </button>
-      </div>
-      <div className="todo-list mt-3">
-        <h2>할 일을 작성해주세요.</h2>
-        <div>{JSON.stringify(todos)}</div>
-      </div>
+      <TodoForm todo={todo} setTodo={setTodo} addTodo={addTodo} />
+      <TodoList todos={todos} />
     </div>
   );
 }
