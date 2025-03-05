@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        {children}
+        <main className="px-3">{children}</main>
       </body>
     </html>
   );

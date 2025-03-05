@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="top-bar h-20 border-b-2 ">
+    <header className="top-bar h-20 border-b-2 mb-3">
       <div className="inner mx-auto flex h-full px-12 ">
         <nav className="menu-1">
           <ul className="flex h-full">
@@ -16,6 +16,11 @@ export default function Header() {
             <li className="nav-item">
               <Link href="/counter" className="menu-text">
                 숫자 기록 앱
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link href="/todos" className="menu-text">
+                할일 앱
               </Link>
             </li>
           </ul>
