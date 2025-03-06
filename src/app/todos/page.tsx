@@ -9,11 +9,14 @@ interface TodoFormProps {
 
 interface TodoListProps {
   todos: string[];
+  setTodos: Dispatch<SetStateAction<string[]>>;
 }
 
 interface TodoListItemProps {
   value: string;
   index: number;
+  todos: string[];
+  setTodos: Dispatch<SetStateAction<string[]>>;
 }
 
 const TodoForm = ({ todo, setTodo, addTodo }: TodoFormProps) => {
@@ -33,15 +36,58 @@ const TodoForm = ({ todo, setTodo, addTodo }: TodoFormProps) => {
   );
 };
 
-const TodoListItem = ({ value, index }: TodoListItemProps) => {
+const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [editValue, setEditValue] = useState<string>(value);
+
+  const modifyTodo = (index: number) => {};
+
+  const removeTodo = (index: number) => {};
+
   return (
-    <li>
-      {index + 1}번 : {value}
+    <li className="flex gap-x-2 items-center py-1">
+      {isEditMode ? (
+        <span className="flex gap-x-2">
+          <>
+            <input
+              type="text"
+              placeholder="할 일을 작성해주세요."
+              className="input"
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+            />
+            <button
+              className="btn btn-outline btn-primary"
+              onClick={() => modifyTodo(index)}
+            >
+              수정
+            </button>
+          </>
+        </span>
+      ) : (
+        <>
+          <span>
+            {index + 1}번 : {value}
+          </span>
+          <button
+            className="btn btn-outline btn-primary"
+            onClick={() => setIsEditMode(true)}
+          >
+            수정
+          </button>
+        </>
+      )}
+      <button
+        className="btn btn-outline btn-secondary"
+        onClick={() => removeTodo(index)}
+      >
+        삭제
+      </button>
     </li>
   );
 };
 
-const TodoList = ({ todos }: TodoListProps) => {
+const TodoList = ({ todos, setTodos }: TodoListProps) => {
   return (
     <div className="todo-list mt-3">
       {todos.length === 0 ? (
@@ -51,7 +97,13 @@ const TodoList = ({ todos }: TodoListProps) => {
           <h2>할 일 목록</h2>
           <ul>
             {todos.map((value, index) => (
-              <TodoListItem key={index} value={value} index={index} />
+              <TodoListItem
+                key={index}
+                value={value}
+                index={index}
+                todos={todos}
+                setTodos={setTodos}
+              />
             ))}
           </ul>
         </>
@@ -77,7 +129,7 @@ export default function Todo() {
   return (
     <div className="todos-wrap">
       <TodoForm todo={todo} setTodo={setTodo} addTodo={addTodo} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} setTodos={setTodos} />
     </div>
   );
 }
