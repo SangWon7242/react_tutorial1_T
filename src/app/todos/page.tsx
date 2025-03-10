@@ -40,7 +40,19 @@ const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<string>(value);
 
-  const modifyTodo = (index: number) => {};
+  const modifyTodo = (index: number) => {
+    if (editValue.trim().length === 0) {
+      alert("할 일을 작성해주세요.");
+      return;
+    }
+
+    const newTodos = todos.map((todo, _index) =>
+      _index === index ? editValue : todo
+    );
+
+    setTodos(newTodos);
+    setIsEditMode(false);
+  };
 
   const removeTodo = (index: number) => {};
 
@@ -62,6 +74,12 @@ const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
             >
               수정
             </button>
+            <button
+              className="btn btn-outline btn-neutral"
+              onClick={() => setIsEditMode(false)}
+            >
+              취소
+            </button>
           </>
         </span>
       ) : (
@@ -75,14 +93,14 @@ const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
           >
             수정
           </button>
+          <button
+            className="btn btn-outline btn-secondary"
+            onClick={() => removeTodo(index)}
+          >
+            삭제
+          </button>
         </>
       )}
-      <button
-        className="btn btn-outline btn-secondary"
-        onClick={() => removeTodo(index)}
-      >
-        삭제
-      </button>
     </li>
   );
 };
