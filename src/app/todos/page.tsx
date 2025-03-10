@@ -1,5 +1,11 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState, useRef } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
 
 interface TodoFormProps {
   todo: string;
@@ -20,6 +26,7 @@ interface TodoListItemProps {
 
 const TodoForm = ({ todo, addTodo }: TodoFormProps) => {
   // input 엘리먼트에 대한 참조를 저장하는 ref
+  // ref가 HTML 입력 요소를 참조
   const inputRef = useRef<HTMLInputElement>(null);
 
   // form 제출 핸들러
@@ -46,6 +53,7 @@ const TodoForm = ({ todo, addTodo }: TodoFormProps) => {
     // 이렇게 하면 매 키입력마다 리렌더링이 발생하지 않음
     addTodo(currentValue);
 
+    // current가 null이 아닌지 확인 후 사용
     if (inputRef.current) {
       inputRef.current.value = "";
     }
@@ -69,16 +77,26 @@ const TodoForm = ({ todo, addTodo }: TodoFormProps) => {
 
 const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [editValue, setEditValue] = useState<string>(value);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // 수정 모드 진입 시 자동 focus
+  useEffect(() => {
+    if (isEditMode) {
+      inputRef.current?.focus();
+    }
+  }, [isEditMode]);
 
   const modifyTodo = (index: number) => {
-    if (editValue.trim().length === 0) {
+    const currentValue = inputRef.current?.value || "";
+
+    if (currentValue.trim().length === 0) {
       alert("할 일을 작성해주세요.");
+      inputRef.current?.focus();
       return;
     }
 
     const newTodos = todos.map((todo, _index) =>
-      _index === index ? editValue : todo
+      _index === index ? currentValue : todo
     );
 
     setTodos(newTodos);
@@ -97,27 +115,25 @@ const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
     <li className="flex gap-x-2 items-center py-1">
       {isEditMode ? (
         <span className="flex gap-x-2">
-          <>
-            <input
-              type="text"
-              placeholder="할 일을 작성해주세요."
-              className="input"
-              value={editValue}
-              onChange={(e) => setEditValue(e.target.value)}
-            />
-            <button
-              className="btn btn-outline btn-primary"
-              onClick={() => modifyTodo(index)}
-            >
-              수정
-            </button>
-            <button
-              className="btn btn-outline btn-neutral"
-              onClick={() => setIsEditMode(false)}
-            >
-              취소
-            </button>
-          </>
+          <input
+            type="text"
+            ref={inputRef}
+            placeholder="할 일을 작성해주세요."
+            className="input"
+            defaultValue={value}
+          />
+          <button
+            className="btn btn-outline btn-primary"
+            onClick={() => modifyTodo(index)}
+          >
+            수정
+          </button>
+          <button
+            className="btn btn-outline btn-neutral"
+            onClick={() => setIsEditMode(false)}
+          >
+            취소
+          </button>
         </span>
       ) : (
         <>
