@@ -54,7 +54,13 @@ const TodoListItem = ({ value, index, todos, setTodos }: TodoListItemProps) => {
     setIsEditMode(false);
   };
 
-  const removeTodo = (index: number) => {};
+  const removeTodo = (index: number) => {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    const newTodos = todos.filter((_, _index) => _index !== index);
+
+    setTodos(newTodos);
+  };
 
   return (
     <li className="flex gap-x-2 items-center py-1">
